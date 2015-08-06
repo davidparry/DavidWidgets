@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">DavidWidgets</string>
+    <string name="com.davidparry.widgets.app_name">DavidWidgets</string>
 
 </resources>
