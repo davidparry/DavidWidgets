@@ -3,10 +3,6 @@ package com.davidparry.widgets;
 import org.junit.runners.model.InitializationError;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
-import org.robolectric.manifest.AndroidManifest;
-import org.robolectric.res.FileFsFile;
-import org.robolectric.res.FsFile;
-import org.robolectric.util.ReflectionHelpers;
 
 /**
  * Copyright 2015 David Parry
@@ -35,27 +31,7 @@ public class WidgetRoboletricRunner extends RobolectricGradleTestRunner {
      */
     public WidgetRoboletricRunner(Class<?> testClass) throws InitializationError {
         super(testClass);
-    }
+         }
 
-    private static String getType(Config config) {
-        try {
-            return ReflectionHelpers.getStaticField(config.constants(), "BUILD_TYPE");
-        } catch (Throwable e) {
-            return null;
-        }
-    }
 
-    @Override
-    protected AndroidManifest getAppManifest(Config config) {
-        final String type = getType(config);
-        FsFile manifest = FileFsFile.from(BUILD_FOLDER, "bundles", type, "AndroidManifest.xml");
-        FsFile res = FileFsFile.from(BUILD_FOLDER, "res", type);
-        FsFile assets = FileFsFile.from(BUILD_FOLDER, "assets", type);
-        return new AndroidManifest(manifest, res, assets) {
-            @Override
-            public int getTargetSdkVersion() {
-                return 21;
-            }
-        };
-    }
 }

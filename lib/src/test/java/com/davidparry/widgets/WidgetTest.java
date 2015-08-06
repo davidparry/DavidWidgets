@@ -27,7 +27,7 @@ import org.robolectric.annotation.Config;
  * limitations under the License.
  */
 @RunWith(WidgetRoboletricRunner.class)
-@Config(constants = BuildConfig.class)
+@Config(constants = BuildConfig.class,sdk = 21)
 public class WidgetTest {
     private Resources mResources;
 

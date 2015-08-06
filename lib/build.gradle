@@ -56,8 +56,25 @@ dependencies {
     compile 'com.android.support:support-v4:22.2.0'
     testCompile "junit:junit:4.10"
     testCompile "org.assertj:assertj-core:1.7.0"
-    testCompile "org.robolectric:robolectric:3.0"
+    testCompile "org.robolectric:robolectric:3.0-rc3"
     testCompile "org.mockito:mockito-core:1.+"
 
 
+}
+
+afterEvaluate { project ->
+    android.libraryVariants.each { variant ->
+        // workaround for missing R class for aar dependencies
+        tasks.getByName("assemble${variant.name.capitalize()}").dependsOn copyAppcompat
+    }
+}
+
+// workaround the missing R class for aar dependencies
+// original solution comes from https://github.com/robolectric/robolectric/issues/1737
+// more dynamic solution is posted at https://github.com/robolectric/robolectric/issues/1796#issuecomment-101422012
+// but this is for this specific project and until its fixed in robo
+task copyAppcompat(type: Copy) {
+    from 'build/generated/source/r/debug/com/davidparry/widgets'.replace("/", File.separator)
+    into 'src/test/java/com/davidparry/widgets'.replace("/", File.separator)
+    include 'R.java'
 }
