@@ -3,4 +3,9 @@
     <declare-styleable name="ThreadLoadingImageView">
         <attr name="image_url" format="string"/>
     </declare-styleable>
+    <declare-styleable name="SimonCircle">
+        <attr name="sc_sections" format="integer"/>
+        <attr name="sc_line_color" format="color" />
+        <attr name="sc_sections_color" format="string" />
+    </declare-styleable>
 </resources>
