@@ -35,6 +35,7 @@ public class WidgetTest {
     public void setUp() {
         mResources = Resources.getSystem();
     }
+
     @Test
     public void initTest() throws Exception {
         Activity activity = Robolectric.buildActivity(Activity.class).create().get();
@@ -42,5 +43,30 @@ public class WidgetTest {
         ThreadLoadingImageView view = new ThreadLoadingImageView(activity,attr);
         Assert.assertNotNull(view);
         view.setUrl("http://www.davidparry.com/storage/profilesiloet50.png");
+        Assert.assertEquals("http://www.davidparry.com/storage/profilesiloet50.png",view.getImageUrl());
+        view.updateImageFromCache();
     }
+
+    @Test
+    public void urlTest() throws Exception {
+        Activity activity = Robolectric.buildActivity(Activity.class).create().get();
+        AttributeSet attr = Mockito.mock(AttributeSet.class);
+        ThreadLoadingImageView view = new ThreadLoadingImageView(activity,attr);
+        Assert.assertNotNull(view);
+        view.setUrl("http://www.davidparry.com/storage/profilesiloet50.png");
+        Assert.assertEquals("http://www.davidparry.com/storage/profilesiloet50.png", view.getImageUrl());
+    }
+
+
+    @Test
+    public void updateImageFromCacheTest() throws Exception {
+        Activity activity = Robolectric.buildActivity(Activity.class).create().get();
+        AttributeSet attr = Mockito.mock(AttributeSet.class);
+        ThreadLoadingImageView view = new ThreadLoadingImageView(activity,attr);
+        Assert.assertNotNull(view);
+        view.setUrl("http://www.davidparry.com/storage/profilesiloet50.png");
+        view.updateImageFromCache();
+    }
+
+
 }
