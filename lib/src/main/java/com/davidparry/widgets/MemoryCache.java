@@ -1,9 +1,13 @@
 package com.davidparry.widgets;
 
 import android.graphics.drawable.Drawable;
+import com.davidparry.widgets.util.ImageCache;
+import com.davidparry.widgets.util.ImageLruCache;
 
-import java.lang.ref.SoftReference;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Copyright 2015 David Parry
@@ -20,24 +24,30 @@ import java.util.*;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class MemoryCache {
+public class MemoryCache implements ImageCache {
 
-    private static Map<String, SoftReference<Drawable>> cache = Collections.synchronizedMap(new HashMap<String, SoftReference<Drawable>>());
     private static Map<String, List<Listener>> listeners = new HashMap<>();
+    private ImageLruCache cache;
 
+    public MemoryCache(int size) {
+        if (size < 0) {
+            size = 1024;
+        }
+        cache = new ImageLruCache(size);
+    }
+
+    @Override
     public void registerListener(Listener listener) {
         addListener(listener);
     }
 
+    @Override
     public Drawable get(String id) {
-        if (!cache.containsKey(id))
-            return null;
-        SoftReference<Drawable> ref = cache.get(id);
-        return ref.get();
+        return cache.get(id);
     }
 
     public void put(String id, Drawable bitmap) {
-        cache.put(id, new SoftReference<>(bitmap));
+        cache.put(id, bitmap);
         notifyListeners(id);
     }
 
@@ -66,7 +76,7 @@ public class MemoryCache {
 
 
     public void clear() {
-        cache.clear();
+        cache.evictAll();
     }
 
     public interface Listener {

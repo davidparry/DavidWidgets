@@ -1,5 +1,6 @@
 package com.davidparry.widgets;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -7,6 +8,7 @@ import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
+import com.davidparry.widgets.util.ImageCache;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -32,7 +34,7 @@ import java.util.concurrent.Executors;
 public class ThreadLoadingImageView extends ImageView implements ThreadLoad {
     private static final String TAG = "ThreadLoadingImageView";
     protected static ExecutorService executorService;
-    private static MemoryCache cache;
+    private static ImageCache cache;
     private String url;
     private ThreadLoadingHandler threadHandler;
 
@@ -52,7 +54,11 @@ public class ThreadLoadingImageView extends ImageView implements ThreadLoad {
 
     private void init(AttributeSet attrs, int defStyleAttr) {
         if (cache == null) {
-            cache = new MemoryCache();
+            ActivityManager am = (ActivityManager) getContext().getSystemService(
+                    Context.ACTIVITY_SERVICE);
+            int maxKb = am.getMemoryClass() * 1024;
+            int limitKb = maxKb / 6;
+            cache = new MemoryCache(limitKb);
         }
         // check to see if the developer is passing in a http link to a image
         loadAttributes(attrs, defStyleAttr);
@@ -100,12 +106,12 @@ public class ThreadLoadingImageView extends ImageView implements ThreadLoad {
     }
 
     @Override
-    public MemoryCache getCache() {
+    public ImageCache getCache() {
         return this.cache;
     }
 
     @Override
-    public void setCache(MemoryCache cache) {
+    public void setCache(ImageCache cache) {
         this.cache = cache;
     }
 

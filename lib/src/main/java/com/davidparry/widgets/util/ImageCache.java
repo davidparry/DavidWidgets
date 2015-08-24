@@ -1,6 +1,7 @@
-package com.davidparry.widgets;
+package com.davidparry.widgets.util;
 
-import com.davidparry.widgets.util.ImageCache;
+import android.graphics.drawable.Drawable;
+import com.davidparry.widgets.MemoryCache;
 
 /**
  * Copyright 2015 David Parry
@@ -17,14 +18,13 @@ import com.davidparry.widgets.util.ImageCache;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public interface ThreadLoad extends MemoryCache.Listener {
-    void loadImageFromUrl(String url);
+public interface ImageCache {
 
-    String getImageUrl();
+    Drawable get(String id);
 
-    void startLoad();
+    void put(String id, Drawable bitmap);
 
-    ImageCache getCache();
+    void clear();
 
-    void setCache(ImageCache cache);
+    void registerListener(MemoryCache.Listener listener);
 }
