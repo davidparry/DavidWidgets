@@ -29,13 +29,13 @@ import java.util.List;
  * limitations under the License.
  */
 public class SimonCircle extends ViewGroup implements View.OnTouchListener {
-    private CircleSection circleSection;
+    protected CircleSection circleSection;
     private Circles circles;
     private Paint lineColorPaint;
     private OnSectionClickListener listener;
     private int sections = 0;
     private int lineColor = 0;
-    private String[] sectionColors;
+    protected String[] sectionColors;
 
 
     public SimonCircle(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -112,9 +112,14 @@ public class SimonCircle extends ViewGroup implements View.OnTouchListener {
     }
 
     @Override
+    public void invalidate() {
+        super.invalidate();
+        circleSection.invalidate();
+    }
+
+    @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
     }
 
     private void init(AttributeSet attrs, int defStyleAttr) {
@@ -193,9 +198,9 @@ public class SimonCircle extends ViewGroup implements View.OnTouchListener {
         boolean onTouch(View v, MotionEvent event, int sectionClicked);
     }
 
-    private class CircleSection extends View {
+    protected class CircleSection extends View {
         List<SectionPolygon> sectionPolygons;
-        private Paint[] sectionColor;
+        Paint[] sectionColor;
         private int[] degreePoints;
         private Path[] paths;
 
@@ -294,6 +299,7 @@ public class SimonCircle extends ViewGroup implements View.OnTouchListener {
                 canvas.drawPath(poly.path, lineColorPaint);
             }
         }
+
 
         private void init(int sections) {
             calculateSections(sections);

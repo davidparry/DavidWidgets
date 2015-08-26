@@ -8,4 +8,7 @@
         <attr name="sc_line_color" format="color" />
         <attr name="sc_sections_color" format="string" />
     </declare-styleable>
+    <declare-styleable name="SimonAnimation">
+        <attr name="sc_sections_highlight_color" format="string" />
+    </declare-styleable>
 </resources>
